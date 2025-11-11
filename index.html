@@ -138,6 +138,18 @@
       border:1px solid rgba(255,255,255,0.28); box-shadow:0 10px 24px rgba(0,0,0,.35); font-weight:800}
 
     /* ====== RESPONSIVE MEDIA QUERIES ====== */
+
+/* Music button improvements for Android / small screens */
+@media (max-width:600px){
+  .music-btn{
+    right:50%;
+    bottom:24px;
+    transform:translateX(50%);
+    padding:14px 18px;
+    font-size:16px;
+    box-shadow:0 0 18px rgba(255,255,255,0.45);
+  }
+}
     /* Android phones & small screens */
     @media (max-width:600px){
       .page{padding:18px}
@@ -214,7 +226,7 @@
 
   <!-- SECOND PAGE / APP -->
   <section id="app" class="page">
-    <audio id="bgm" src="wm.mp3" preload="auto" loop></audio>
+    <audio id="bgm" src="wm.mp3" preload="auto" loop playsinline></audio>
     <button class="music-btn" id="musicToggle" title="Play/Pause Shabad">🎶 Shabad</button>
 
     <button class="chip" id="backBtn" style="position:fixed; left:16px; top:16px; z-index:52">← Back</button>
@@ -296,14 +308,39 @@
         typeTarget.textContent = typeMessage.slice(0, typeIdx++);
         setTimeout(typeLoop, 35);
       } else {
-        setTimeout(()=>{ typeIdx = 0; typeTarget.textContent=''; typeLoop(); }, 2200);
+        setTimeout(()=>{ typeIdx = 0; typeTarget.textContent=''; typeLoop();
+        if (isAndroid) { playMusic(); } }, 2200);
       }
     }
 
     // Music controls (SECOND PAGE ONLY)
-    const bgm = document.getElementById('bgm');
-    const musicToggle = document.getElementById('musicToggle');
-    let isPlaying = false;
+const bgm = document.getElementById('bgm');
+const musicToggle = document.getElementById('musicToggle');
+let isPlaying = false;
+const isAndroid = /Android/i.test(navigator.userAgent);
+
+function playMusic(){ if(bgm && bgm.src){ bgm.play().then(()=>{isPlaying=true; musicToggle.textContent='⏸️ Pause';}).catch(()=>{});} }
+function pauseMusic(){ if(bgm){ bgm.pause(); isPlaying=false; musicToggle.textContent='🎶 Shabad'; } }
+
+// On Android, unlock audio on first tap anywhere on the page
+function unlockAudio(){
+  if (document.body.classList.contains('app-active') && !isPlaying) {
+    playMusic();
+  }
+  document.removeEventListener('touchend', unlockAudio);
+  document.removeEventListener('click', unlockAudio);
+}
+if (isAndroid) {
+  document.addEventListener('touchend', unlockAudio, { once:true });
+  document.addEventListener('click', unlockAudio, { once:true });
+}
+
+// When coming back to the tab, resume if it was playing
+document.addEventListener('visibilitychange', ()=>{
+  if (!document.hidden && isAndroid && document.body.classList.contains('app-active') && isPlaying) {
+    bgm.play().catch(()=>{});
+  }
+});
     function playMusic(){ if(bgm && bgm.src){ bgm.play().then(()=>{isPlaying=true; musicToggle.textContent='⏸️ Pause';}).catch(()=>{});} }
     function pauseMusic(){ if(bgm){ bgm.pause(); isPlaying=false; musicToggle.textContent='🎶 Shabad'; } }
     musicToggle?.addEventListener('click', ()=>{ isPlaying ? pauseMusic() : playMusic(); });
