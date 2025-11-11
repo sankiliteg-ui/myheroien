@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome • ANNU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Base theme (Login page) */
+      --bg1:#0b1020; --bg2:#1b2450; --bg3:#3b0764;
+      --accent:#7dd3fc; --accent2:#a7f3d0; --rose:#fb7185; --card:rgba(255,255,255,0.08); --text:#e5e7eb; --muted:#cbd5e1;
+      --heading-grad: linear-gradient(90deg,#fda4af,#f9a8d4,#c4b5fd,#93c5fd,#a7f3d0);
+    }
+
+    /* When on APP (second page), switch palette */
+    body.app-active{
+      --bg1:#0b0b12; --bg2:#1a1235; --bg3:#2a1a57;          /* darker indigo base */
+      --accent:#fbbf24; --accent2:#60a5fa; --rose:#ef4444;   /* warm + blue accents */
+      --card:rgba(255,255,255,0.10); --text:#f3f4f6; --muted:#d1d5db;
+      --heading-grad: linear-gradient(90deg,#f59e0b,#fb7185,#60a5fa,#34d399);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Poppins,system-ui,Segoe UI,Roboto,Arial; color:var(--text);
+      background:
+        radial-gradient(90vw 80vh at 20% 10%, rgba(125,211,252,0.10), transparent 60%),
+        radial-gradient(70vw 80vh at 85% 20%, rgba(167,243,208,0.09), transparent 60%),
+        linear-gradient(140deg,var(--bg1),var(--bg2) 50%, var(--bg3));}
+
+    /* Layout */
+    .page{min-height:100vh; display:flex; justify-content:center; align-items:center; padding:32px}
+    .card{position:relative; width:min(1000px,96vw); background:linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
+      border:1px solid rgba(255,255,255,0.18); backdrop-filter:blur(12px); border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.35); overflow:hidden}
+    .card::before{display:none !important}
+
+    .grid{display:grid; grid-template-columns:1.1fr 0.9fr}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+    /* Headings */
+    .title{text-transform:uppercase; font-weight:800; letter-spacing:1px; margin:0 0 8px; font-size:34px}
+    .heading{font-weight:900; font-size:32px; margin:0 0 6px; text-transform:uppercase;
+      background:var(--heading-grad);
+      -webkit-background-clip:text; background-clip:text; color:transparent; background-size:220% 100%; animation:shine 10s linear infinite}
+    .subheading{text-transform:capitalize; font-weight:700; margin:0 0 8px}
+    .subtitle{margin:0; color:var(--muted); font-size:16px}
+    @keyframes shine{0%{background-position:0% 0}100%{background-position:220% 0}}
+
+    .timebar{display:flex; gap:10px; align-items:center; margin:16px 0 16px}
+    .chip{background:var(--card); padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.2); font-weight:600}
+
+    /* A little thought/quote card */
+    .thought{margin:10px 0 18px; padding:12px 14px; border-radius:16px; border:1px solid rgba(255,255,255,0.18);
+      background:linear-gradient(180deg, rgba(251,191,36,0.12), rgba(147,197,253,0.08)); font-weight:600}
+    .thought b{background:linear-gradient(90deg,#fde68a,#fca5a5,#a7f3d0); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    /* Glowing login form */
+    .login-card{position:relative; padding:18px; border-radius:16px; background:rgba(255,255,255,0.05); overflow:hidden}
+    .login-card::before{display:none !important}
+
+    .row{display:flex; gap:12px}
+    label.glow{display:inline-block; font-weight:800; letter-spacing:.3px; color:#fff; text-shadow:0 0 10px rgba(56,189,248,.6), 0 0 18px rgba(52,211,153,.5)}
+    .input-wrap{position:relative; flex:1; border-radius:14px; padding:2px; background:linear-gradient(90deg,rgba(34,211,238,.55),rgba(96,165,250,.45),rgba(168,85,247,.45),rgba(52,211,153,.55));}
+    .input-wrap input{width:100%; border:none; padding:14px 16px; border-radius:12px; outline:none; background:#fff; color:#0f172a; box-shadow:0 0 0 rgba(56,189,248,0); transition:.25s}
+    .input-wrap input:focus{box-shadow:0 0 18px rgba(56,189,248,.45), 0 0 28px rgba(52,211,153,.35)}
+    .btn{cursor:pointer; border:none; font-weight:800; letter-spacing:0.4px; padding:14px 18px; border-radius:14px;
+      background:linear-gradient(90deg,#22d3ee,#60a5fa,#a78bfa,#34d399); color:#0b1220; box-shadow:0 0 0 rgba(34,211,238,0);
+      animation:btnGlow 3s ease-in-out infinite; transition:transform .08s ease}
+    .btn:hover{transform:translateY(-1px)}
+    @keyframes btnGlow{0%,100%{box-shadow:0 0 12px rgba(34,211,238,.35), 0 0 24px rgba(96,165,250,.25)}50%{box-shadow:0 0 22px rgba(34,211,238,.6), 0 0 40px rgba(96,165,250,.45)}}
+
+    .hint{margin-top:10px; color:#d1fae5; font-size:14px}
+    .error{margin-top:10px; color:var(--rose); font-weight:700; display:none}
+
+    /* Right visual */
+    .visual{position:relative; min-height:360px; background:
+      linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
+      url('https://images.unsplash.com/photo-1526661992370-95c26f69ab5b?q=80&w=1600&auto=format&fit=crop') center/cover}
+    .overlay{position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:20px}
+
+    /* Fancy name chip with image */
+    .name-chip{align-self:flex-start; display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:999px;
+      background:rgba(255,255,255,0.24); backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.35);
+      font-weight:900; letter-spacing:1px}
+    .chip-dp{width:28px; height:28px; border-radius:999px; object-fit:cover; border:2px solid rgba(255,255,255,.85)}
+    .chip-name{background:linear-gradient(90deg,#fda4af,#c4b5fd,#93c5fd,#a7f3d0); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    /* DP with background image behind the photo */
+    .dp-photo{align-self:flex-end; width:130px; height:130px; border-radius:999px; overflow:hidden; border:3px solid rgba(255,255,255,0.9);
+      background:
+        url('t1.jpg') center/cover no-repeat, /* your decorative DP background */
+        radial-gradient(120px 120px at 50% 50%, rgba(125,211,252,.25), rgba(167,243,208,.15) 60%, transparent 70%);
+      box-shadow:0 0 0 0 rgba(125,211,252,.55), 0 0 0 0 rgba(167,243,208,.45); animation:dpPulse 3.2s ease-in-out infinite; position:relative}
+    .dp-photo img{width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit}
+    @keyframes dpPulse{0%,100%{box-shadow:0 0 12px rgba(125,211,252,.45), 0 0 22px rgba(167,243,208,.35)}50%{box-shadow:0 0 26px rgba(125,211,252,.75), 0 0 48px rgba(167,243,208,.55)}}
+
+    /* Second page (background tweaked; colors come from CSS variables above) */
+    #app.page{
+      background:
+        radial-gradient(90vw 80vh at 20% 10%, rgba(251,191,36,0.08), transparent 60%),
+        radial-gradient(70vw 80vh at 85% 20%, rgba(96,165,250,0.07), transparent 60%),
+        linear-gradient(160deg,var(--bg1),var(--bg2) 48%, var(--bg3));
+    }
+    #app{display:none}
+
+    .wrap{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+    @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+    .card2{position:relative; background:var(--card); border-radius:20px; padding:18px; border:1px solid rgba(255,255,255,0.18); overflow:hidden}
+    .card2::before{display:none !important}
+
+    .lead{margin:0 0 10px}
+    .tip{display:flex; gap:8px; background:rgba(255,255,255,0.06); border:1px dashed rgba(255,255,255,0.18); border-radius:14px; padding:10px; margin-bottom:8px}
+    .gallery{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    .gallery img{width:100%; height:150px; object-fit:cover; border-radius:14px; border:1px solid rgba(255,255,255,0.18)}
+
+    /* Multicolor subtitle accents */
+    .accent-word{background:var(--heading-grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+    /* Typing animation */
+    .type{display:inline-block; border-right:2px solid rgba(229,231,235,.8); white-space:nowrap; overflow:hidden; animation: caret 1s steps(1) infinite}
+    @keyframes caret{50%{border-color:transparent}}
+
+    /* Blinking Waheguru text */
+    .blink{font-weight:900; letter-spacing:1px; text-transform:uppercase; text-shadow:0 0 12px rgba(255,255,255,.6), 0 0 22px rgba(96,165,250,.5), 0 0 32px rgba(52,211,153,.45);
+      animation:blink 1.6s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.55}}
+
+    /* Footer */
+    .footer{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:16px; color:var(--muted)}
+    .tag{background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.35); padding:6px 10px; border-radius:999px; font-weight:700}
+
+    /* Music button (only second page) */
+    .music-btn{position:fixed; right:16px; bottom:16px; z-index:50; border:none; cursor:pointer;
+      background:rgba(255,255,255,0.18); color:#fff; padding:12px 14px; border-radius:999px; backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.28); box-shadow:0 10px 24px rgba(0,0,0,.35); font-weight:800}
+
+    /* Responsive */
+    @media (min-width:1024px){
+      .card{width:min(1100px,96vw)}
+      .heading{font-size:36px}
+    }
+    @media (max-width:600px){
+      .page{padding:20px}
+      .title{font-size:26px}
+      .heading{font-size:24px}
+      .grid{grid-template-columns:1fr}
+      .row{flex-direction:column}
+      .btn{width:100%}
+      .visual{min-height:260px}
+      .dp-photo{width:100px;height:100px}
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN PAGE -->
+  <section id="login" class="page">
+    <div class="card grid">
+      <div class="pane">
+        <h1 class="title">WELCOME</h1>
+        <p class="subtitle">Please Log In With Name <b class="accent-word">Annu</b> To Continue.</p>
+
+        <div class="timebar">
+          <span id="date" class="chip">📅 --</span>
+          <span id="time" class="chip">⏰ --</span>
+        </div>
+
+        <!-- Thought of the day (your own line) -->
+        <div class="thought">💛 <b>Today’s Thought:</b> "Waheguru ji, Annu te sada mehar karo — hausla, sehat, te muskurahat har din vadhe."</div>
+
+        <div class="login-card">
+          <label for="name" class="glow">Enter Your Name</label>
+          <div class="row" style="margin-top:8px">
+            <div class="input-wrap"><input id="name" type="text" placeholder="Type ANNU here-ANNU NAAM SI PAGE OPEN HOGA" autocomplete="off" /></div>
+            <button class="btn" id="loginBtn">Login</button>
+          </div>
+          <div class="hint">Tip: Name is case-insensitive (annu / ANNU both work).</div>
+          <div class="error" id="err">❌ Wrong name. Please type <b>ANNU</b>.</div>
+        </div>
+      </div>
+
+      <div class="visual">
+        <div class="overlay">
+          <div class="name-chip">
+            <img class="chip-dp" src="t1.jpg" alt="Annu" />
+            <span class="chip-name">ANNU</span>
+          </div>
+          <!-- DP now has its own decorative background (dp-bg.jpg) behind t1.jpg -->
+          <div class="dp-photo"><img src="t1.jpg" alt="Annu DP" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECOND PAGE / APP -->
+  <section id="app" class="page">
+    <audio id="bgm" src="wm.mp3" preload="auto" loop></audio>
+    <button class="music-btn" id="musicToggle" title="Play/Pause Shabad">🎶 Shabad</button>
+
+    <button class="chip" id="backBtn" style="position:fixed; left:16px; top:16px; z-index:52">← Back</button>
+    <div class="card" style="padding:26px; z-index:51">
+      <header style="display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:space-between">
+        <div class="chip" id="now">--</div>
+        <div class="blink">WAHEGURU</div>
+      </header>
+
+      <h2 class="heading">WAHEGURU BLESSINGS</h2>
+      <p class="subtitle"><span id="typeText" class="type"></span></p>
+
+      <div class="wrap" style="margin-top:12px">
+        <!-- LEFT: Waheguru / Prayer Section -->
+        <div class="card2">
+          <h3 class="subheading">🙏 Waheguru • Prayer For Safety</h3>
+          <p class="lead">Waheguru ji, mehar bakhsho. <span class="accent-word">Annu</span> hamesha surakhit, tandurust te khush rahe. Mann vich shanti, dil vich hausla, te har kadam te kirpa bani rahe.</p>
+          <div class="tip">🕊️ <span>Simran 5–10 min har din — “Waheguru, Waheguru.”</span></div>
+          <div class="tip">🛡️ <span>Hamesha apne charna vich rakho</span></div>
+          <div class="tip">💫 <span>Shukrana — har din chhotian khushiyan layi.</span></div>
+
+          <div class="gallery">
+            <img src="w1 (1).jpeg" alt="Sri Harmandir Sahib (Golden Temple)" />
+            <img src="w1 (2).jpeg" alt="Golden Temple at Night" />
+          </div>
+        </div>
+
+        <!-- RIGHT: Health Tips Section -->
+        <div class="card2">
+          <h3 class="subheading">🌿 Health • Daily Care</h3>
+          <p class="lead">Health Is Wealth — Take It Gently.</p>
+          <div class="tip">🥗 <span>3–5 Servings Veg/Fruit — Colors = Vitamins.</span></div>
+          <div class="tip">🚰 <span>8–10 Glasses Water — Keep A Bottle Nearby.</span></div>
+          <div class="tip">🏃‍♀️ <span>30 Min Movement — Walk, Dance, Or Stretch.</span></div>
+          <div class="tip">😴 <span>7–8 Hr Sleep — Keep Fixed Sleep/Wake Times.</span></div>
+          <div class="tip">🧘‍♀️ <span>Breathing Breaks — 4–6 Deep Breaths × 3.</span></div>
+          <div class="tip">🩺 <span>Check-Ups — Follow Doctor’s Advice.</span></div>
+          <div class="gallery">
+            <img src="h1 (1).jpeg" alt="Healthy salad" />
+            <img src="h1 (2).jpeg" alt="Yoga" />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span class="tag">Waheguru • Sehat • Sukh</span>
+        <span>With Faith And Good Habits, You Glow ✨</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Live Date & Time
+    const dateEl = document.getElementById('date');
+    const timeEl = document.getElementById('time');
+    const nowEl = document.getElementById('now');
+
+    function fmtDateTime(d){
+      const optsDate = { weekday:'short', year:'numeric', month:'short', day:'numeric' };
+      const optsTime = { hour:'2-digit', minute:'2-digit', second:'2-digit' };
+      return { date: d.toLocaleDateString(undefined, optsDate), time: d.toLocaleTimeString(undefined, optsTime) };
+    }
+    function tick(){
+      const d = new Date();
+      const {date, time} = fmtDateTime(d);
+      if(dateEl) dateEl.textContent = '📅 ' + date;
+      if(timeEl) timeEl.textContent = '⏰ ' + time;
+      if(nowEl) nowEl.textContent = date + ' • ' + time;
+    }
+    tick(); setInterval(tick, 1000);
+
+    // Typing animation text on second page
+    const typeTarget = document.getElementById('typeText');
+    const typeMessage = 'Waheguru ji di kirpa naal — May your path be safe, your heart calm, and your health bright.';
+    let typeIdx = 0;
+    function typeLoop(){
+      if(!typeTarget) return;
+      if(typeIdx <= typeMessage.length){
+        typeTarget.textContent = typeMessage.slice(0, typeIdx++);
+        setTimeout(typeLoop, 35);
+      } else {
+        setTimeout(()=>{ typeIdx = 0; typeTarget.textContent=''; typeLoop(); }, 2200);
+      }
+    }
+
+    // Music controls (SECOND PAGE ONLY)
+    const bgm = document.getElementById('bgm');
+    const musicToggle = document.getElementById('musicToggle');
+    let isPlaying = false;
+    function playMusic(){ if(bgm && bgm.src){ bgm.play().then(()=>{isPlaying=true; musicToggle.textContent='⏸️ Pause';}).catch(()=>{});} }
+    function pauseMusic(){ if(bgm){ bgm.pause(); isPlaying=false; musicToggle.textContent='🎶 Shabad'; } }
+    musicToggle?.addEventListener('click', ()=>{ isPlaying ? pauseMusic() : playMusic(); });
+
+    // Simple Login & page routing
+    const input = document.getElementById('name');
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('err');
+    const loginPage = document.getElementById('login');
+    const appPage = document.getElementById('app');
+    const backBtn = document.getElementById('backBtn');
+
+    function tryLogin(){
+      const val = (input.value || '').trim().toLowerCase();
+      if(val === 'annu'){
+        document.body.classList.add('app-active'); // switch color theme for second page
+        loginPage.style.display = 'none';
+        appPage.style.display = 'flex';
+        input.value = '';
+        err.style.display = 'none';
+        window.scrollTo({top:0, behavior:'smooth'});
+        typeIdx = 0; typeTarget.textContent=''; typeLoop();
+      } else {
+        err.style.display = 'block';
+      }
+    }
+
+    btn.addEventListener('click', tryLogin);
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ tryLogin(); }});
+    backBtn?.addEventListener('click', ()=>{
+      appPage.style.display = 'none';
+      loginPage.style.display = 'flex';
+      document.body.classList.remove('app-active'); // back to login theme
+      input.focus();
+      pauseMusic();
+    });
+  </script>
+</body>
+</html>
