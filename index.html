@@ -88,10 +88,10 @@
     .chip-dp{width:28px; height:28px; border-radius:999px; object-fit:cover; border:2px solid rgba(255,255,255,.85)}
     .chip-name{background:linear-gradient(90deg,#fda4af,#c4b5fd,#93c5fd,#a7f3d0); -webkit-background-clip:text; background-clip:text; color:transparent}
 
-    /* DP with background image behind the photo */
+    /* DP with decorative background BEHIND the photo */
     .dp-photo{align-self:flex-end; width:130px; height:130px; border-radius:999px; overflow:hidden; border:3px solid rgba(255,255,255,0.9);
       background:
-        url('t1.jpg') center/cover no-repeat, /* your decorative DP background */
+        url('dp-bg.jpg') center/cover no-repeat, /* <-- put your bg image */
         radial-gradient(120px 120px at 50% 50%, rgba(125,211,252,.25), rgba(167,243,208,.15) 60%, transparent 70%);
       box-shadow:0 0 0 0 rgba(125,211,252,.55), 0 0 0 0 rgba(167,243,208,.45); animation:dpPulse 3.2s ease-in-out infinite; position:relative}
     .dp-photo img{width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit}
@@ -137,20 +137,38 @@
       background:rgba(255,255,255,0.18); color:#fff; padding:12px 14px; border-radius:999px; backdrop-filter:blur(8px);
       border:1px solid rgba(255,255,255,0.28); box-shadow:0 10px 24px rgba(0,0,0,.35); font-weight:800}
 
-    /* Responsive */
-    @media (min-width:1024px){
-      .card{width:min(1100px,96vw)}
-      .heading{font-size:36px}
-    }
+    /* ====== RESPONSIVE MEDIA QUERIES ====== */
+    /* Android phones & small screens */
     @media (max-width:600px){
-      .page{padding:20px}
-      .title{font-size:26px}
-      .heading{font-size:24px}
+      .page{padding:18px}
+      .title{font-size:24px}
+      .heading{font-size:22px}
+      .subtitle{font-size:14px}
       .grid{grid-template-columns:1fr}
       .row{flex-direction:column}
       .btn{width:100%}
-      .visual{min-height:260px}
-      .dp-photo{width:100px;height:100px}
+      .visual{min-height:240px}
+      .dp-photo{width:96px;height:96px}
+      .chip{padding:8px 12px}
+      .name-chip{gap:8px; padding:6px 10px}
+      .chip-dp{width:24px;height:24px}
+      .thought{font-size:14px}
+    }
+
+    /* Laptops / larger screens */
+    @media (min-width:1024px){
+      .card{width:min(1200px,94vw)}
+      .heading{font-size:38px}
+      .title{font-size:36px}
+      .subtitle{font-size:17px}
+      .dp-photo{width:150px;height:150px}
+      .gallery img{height:180px}
+    }
+
+    /* Tablets (optional middle step) */
+    @media (min-width:601px) and (max-width:1023px){
+      .heading{font-size:28px}
+      .dp-photo{width:120px;height:120px}
     }
   </style>
 </head>
